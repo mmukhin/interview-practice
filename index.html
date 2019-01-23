@@ -1,0 +1,52 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src='https://code.responsivevoice.org/responsivevoice.js'></script>
+
+<button id="button" onclick="nextQuestion()" style="width:100%; height: 300px;display:none;">Next Question</button>
+<div id="question" style="text-align: center; margin-top:30px;"></div>
+
+<script>
+    function getRndInteger(min, max) {
+      return Math.floor(Math.random() * (max - min) ) + min;
+    }
+
+    function Timer(callback, delay) {
+        var timerId, start, remaining = delay;
+
+        this.stop = function() {
+            window.clearTimeout(timerId);
+            remaining -= new Date() - start;
+        };
+
+        this.start = function() {
+            start = new Date();
+            window.clearTimeout(timerId);
+            timerId = window.setTimeout(callback, remaining);
+        };
+    }
+
+    var questions = [];
+
+    $.getJSON('questions.json', function(data) {
+        window.questions = jsonq;
+        document.getElementById("button").style.display = "block";
+    });
+
+    var timer = new Timer(function() {
+        responsiveVoice.speak("stop", "US English Female");
+    }, 60000);
+
+    function nextQuestion() {
+        //timer.stop();
+
+        var num = getRndInteger(0, questions.length);
+
+        responsiveVoice.speak(questions[num], "US English Female");
+
+        // display question
+        document.getElementById('question').innerHTML = questions[num];
+
+        // set timer 
+        timer.start();
+    }
+
+</script>
