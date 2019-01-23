@@ -2,7 +2,7 @@
 
 <button onclick="nextQuestion()" style="width:100%; height: 300px;background: blue;color:white;cursor: pointer;font-size:30px;">ASK QUESTION</button>
 <div id="question" style="text-align: center; margin-top:30px;font-size:30px;">
-    Enable sound, and click the button to ask a question. After 60 seconds, you will hear "60 seconds".
+    Enable sound, and click the button to ask a question. You will be notified at the 30 and 60 second mark.
 </div>
 
 <script>
@@ -70,8 +70,12 @@
         'Tell me of a time when you made a gut decision, without looking into any data?'
     ];
 
-    var timer = new Timer(function() {
-        responsiveVoice.speak("60 seconds", "US English Female");
+    var timer30 = new Timer(function() {
+        responsiveVoice.speak("30", "US English Female", {volume: .4});
+    }, 30000);
+
+    var timer60 = new Timer(function() {
+        responsiveVoice.speak("60", "US English Female", {volume: .4});
     }, 60000);
 
     function nextQuestion() {
@@ -85,7 +89,8 @@
         document.getElementById('question').innerHTML = questions[num];
 
         // set timer 
-        timer.start();
+        timer30.start();
+        timer60.start();
     }
 
 </script>
