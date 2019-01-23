@@ -1,9 +1,28 @@
 <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
 
-<button onclick="nextQuestion()" style="width:100%; height: 300px;">Next Question</button>
+<button onclick="nextQuestion()" style="width:100%; height: 300px;background: blue;color:white;cursor: pointer;">ASK QUESTION</button>
 <div id="question" style="text-align: center; margin-top:30px;"></div>
 
 <script>
+    function getRndInteger(min, max) {
+      return Math.floor(Math.random() * (max - min) ) + min;
+    }
+
+    function Timer(callback, delay) {
+        var timerId, start, remaining = delay;
+
+        this.stop = function() {
+            window.clearTimeout(timerId);
+            remaining -= new Date() - start;
+        };
+
+        this.start = function() {
+            start = new Date();
+            window.clearTimeout(timerId);
+            timerId = window.setTimeout(callback, remaining);
+        };
+    }
+
     var questions = [
         'Describe a situation in which you were able to use persuasion to successfully convince someone to see things your way.',
         'Describe a time when you were faced with a stressful situation that demonstrated your coping skills.',
@@ -48,36 +67,6 @@
         'What\'s the most innovative thing you\'ve done in your job?',
         'Tell me of a time when you made a gut decision, without looking into any data?'
     ];
-    
-    function getRndInteger(min, max) {
-      return Math.floor(Math.random() * (max - min) ) + min;
-    }
-
-    function Timer(callback, delay) {
-        var timerId, start, remaining = delay;
-
-        this.stop = function() {
-            window.clearTimeout(timerId);
-            remaining -= new Date() - start;
-        };
-
-        this.start = function() {
-            start = new Date();
-            window.clearTimeout(timerId);
-            timerId = window.setTimeout(callback, remaining);
-        };
-    }
-
-    var questions = [];
-
-    $.ajax({
-        url: 'questions.json',
-        dataType: 'json',
-        async: false,
-        success: function(questions) {
-        
-        }
-    });
 
     var timer = new Timer(function() {
         responsiveVoice.speak("stop", "US English Female");
